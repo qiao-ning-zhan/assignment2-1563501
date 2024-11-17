@@ -1,3 +1,8 @@
+import streamlit as st
+from utils import read_docx, chunk_document  # Ensure these functions are defined in utils.py
+from vector_database import VectorDatabase   # Ensure this class is defined in vector_database.py
+from openai_interface import OpenAIInterface  # Ensure this class is defined in openai_interface.py
+
 def main():
     st.set_page_config(page_title="Protection Visa Eligibility Assistant", page_icon="🛡️", layout="wide")
     st.title("🛡️ Protection Visa Eligibility Assistant")
@@ -63,17 +68,17 @@ def main():
             context = st.session_state.eligibility_data["persecution_details"]
             if uploaded_file:
                 relevant_chunks = st.session_state.vector_db.search(context)
-                context += "\n".join(relevant_chunks)
+                context += "\n" + "\n".join(relevant_chunks)
 
             # Generate AI analysis
             prompt = f"""
-            Context: {context}
-            Questionnaire Responses:
-            1. Are you a refugee or at risk? {question1}
-            2. Can you legally settle in another country? {question2}
-            3. Do you fear persecution for specific reasons? {question3}
+Context: {context}
+Questionnaire Responses:
+1. Are you a refugee or at risk? {question1}
+2. Can you legally settle in another country? {question2}
+3. Do you fear persecution for specific reasons? {question3}
 
-            Based on this information, provide an analysis of the individual's eligibility for a protection visa.
+Based on this information, provide an analysis of the individual's eligibility for a protection visa.
             """
             conversation = [
                 {"role": "system", "content": "You are an AI assistant analyzing eligibility for a protection visa based on the user's input and provided context."},
