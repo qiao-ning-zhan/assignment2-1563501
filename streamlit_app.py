@@ -329,74 +329,188 @@
 
 
 
+# =============================================
+# =========     Version 4     =================
+# =============================================
 
+# import streamlit as st
+# from typing import List, Dict
+# import requests
+# from dotenv import load_dotenv
+
+# # Load environment variables
+# load_dotenv()
+
+# # Load OpenAI API Key
+# OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
+# if not OPENAI_API_KEY:
+#     raise ValueError("OPENAI_API_KEY not found in environment variables")
+
+# # OpenAI interface
+# class OpenAIInterface:
+#     def __init__(self):
+#         self.api_key = OPENAI_API_KEY
+#         self.base_url = "https://api.openai.com/v1"
+#         self.headers = {
+#             "Authorization": f"Bearer {self.api_key}",
+#             "Content-Type": "application/json"
+#         }
+
+#     def generate_chat_response(self, conversation: List[Dict[str, str]]) -> str:
+#         payload = {
+#             "model": "gpt-3.5-turbo",
+#             "messages": conversation
+#         }
+#         response = requests.post(f"{self.base_url}/chat/completions", headers=self.headers, json=payload)
+#         response.raise_for_status()
+#         return response.json()['choices'][0]['message']['content']
+
+# def ask_openai(question: str, context: str) -> str:
+#     interface = st.session_state.openai_interface
+#     conversation = [
+#         {"role": "system", "content": "You are a legal assistant specializing in Australian protection visa cases. Use the provided context and respond with probability estimates."},
+#         {"role": "user", "content": f"Context: {context}\n\nQuestion: {question}"}
+#     ]
+#     return interface.generate_chat_response(conversation)
+
+# # Streamlit application
+# def main():
+#     st.set_page_config(page_title="Protection Visa Assistant", page_icon="🛡️", layout="wide")
+#     st.title("🛡️ Australian Protection Visa Assistant")
+
+#     # Initialize OpenAI interface
+#     if 'openai_interface' not in st.session_state:
+#         st.session_state.openai_interface = OpenAIInterface()
+
+#     # Initialize session state
+#     if 'responses' not in st.session_state:
+#         st.session_state.responses = {}
+#     if 'step' not in st.session_state:
+#         st.session_state.step = 1
+#     if 'progress' not in st.session_state:
+#         st.session_state.progress = 0
+#     if 'next_group_unlocked' not in st.session_state:
+#         st.session_state.next_group_unlocked = False
+
+#     # Predefined legal guidance
+#     st.subheader("Guidance for Australian Protection Visa")
+#     st.write("""
+#     Protection visas apply to individuals who need protection in Australia because they face real risks of significant harm or persecution if they return to their home country. Answer the questions below to determine your eligibility.
+#     """)
+
+#     # Questions split into groups
+#     questions_group = {
+#         1: [
+#             "Are you a refugee or at risk of significant harm if you return to your home country?",
+#             "Can you legally settle in another country (not your home country) with safety guaranteed?",
+#             "Do you have a well-founded fear of persecution, making you unable or unwilling to return to your home country?",
+#             "Do you fear persecution based on race, religion, nationality, membership in a particular social group, or political opinion?"
+#         ],
+#         2: [
+#             "Does persecution involve serious harm or systematic, discriminatory conduct?",
+#             "Do you face real risk of persecution in all areas of your home country?",
+#             "Does serious harm include threats to life or freedom?",
+#             "Does serious harm include severe physical harassment or abuse?"
+#         ],
+#         3: [
+#             "Does serious harm include severe economic hardship threatening survival?",
+#             "Does serious harm require you to alter or hide your beliefs, identity, or practices (e.g., religion, sexuality)?",
+#             "Can your home country's government or any controlling group protect you from persecution?",
+#             "Does significant harm risk include torture, inhumane treatment, or punishment?"
+#         ]
+#     }
+
+#     # Sidebar progress bar
+#     total_questions = sum(len(questions) for questions in questions_group.values())
+#     progress_percentage = int((st.session_state.progress / total_questions) * 100)
+#     st.sidebar.header("Progress")
+#     st.sidebar.progress(progress_percentage)
+
+#     # Current step
+#     step = st.session_state.step
+#     current_questions = questions_group[step]
+
+#     # Display questions for the current step
+#     st.subheader(f"Step {step}: Questions")
+#     for idx, question in enumerate(current_questions, 1):
+#         key = f"step_{step}_q{idx}"
+#         # Set default option to None
+#         if key not in st.session_state.responses:
+#             st.session_state.responses[key] = None
+#         st.session_state.responses[key] = st.radio(f"{idx}. {question}", ["Select an option", "Yes", "No"], key=key, index=0)
+
+#     # Submit button for current step
+#     if st.button(f"Submit Step {step}"):
+#         # Ensure all questions are answered
+#         if all(st.session_state.responses[f"step_{step}_q{idx}"] not in [None, "Select an option"] for idx in range(1, len(current_questions) + 1)):
+#             # Compile context for current step
+#             context = "\n".join([f"{q} | Answer: {st.session_state.responses[f'step_{step}_q{idx}']}" for idx, q in enumerate(current_questions, 1)])
+#             with st.spinner("Analyzing your responses..."):
+#                 result = ask_openai("Based on these responses, what is the probability of meeting protection visa requirements?", context)
+#             st.success("Analysis complete!")
+#             st.write(result)
+
+#             # Update progress
+#             st.session_state.progress += len(current_questions)
+#             st.session_state.next_group_unlocked = True
+#         else:
+#             st.error("Please answer all questions before submitting.")
+
+#     # Next group button
+#     if st.session_state.next_group_unlocked and step < 3:
+#         if st.button("Next Group"):
+#             st.session_state.step += 1
+#             st.session_state.next_group_unlocked = False
+
+#     # Final result
+#     if step == 3 and st.session_state.progress == total_questions:
+#         st.subheader("Final Result")
+#         st.write("Based on your answers to all questions, here is the final analysis:")
+#         final_context = "\n".join([f"Step {i}: {', '.join([f'Q{j}: {st.session_state.responses[f'step_{i}_q{j}']}' for j in range(1, 5)])}" for i in range(1, 4)])
+#         final_result = ask_openai("Provide a final analysis of the applicant's eligibility for a protection visa based on all steps.", final_context)
+#         st.write(final_result)
+
+# if __name__ == "__main__":
+#     main()
+
+
+
+
+
+# =============================================
+# =========     Version 5     =================
+# =============================================
 
 import streamlit as st
 from typing import List, Dict
-import requests
-from dotenv import load_dotenv
 
-# Load environment variables
-load_dotenv()
-
-# Load OpenAI API Key
-OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
-if not OPENAI_API_KEY:
-    raise ValueError("OPENAI_API_KEY not found in environment variables")
-
-# OpenAI interface
-class OpenAIInterface:
-    def __init__(self):
-        self.api_key = OPENAI_API_KEY
-        self.base_url = "https://api.openai.com/v1"
-        self.headers = {
-            "Authorization": f"Bearer {self.api_key}",
-            "Content-Type": "application/json"
-        }
-
-    def generate_chat_response(self, conversation: List[Dict[str, str]]) -> str:
-        payload = {
-            "model": "gpt-3.5-turbo",
-            "messages": conversation
-        }
-        response = requests.post(f"{self.base_url}/chat/completions", headers=self.headers, json=payload)
-        response.raise_for_status()
-        return response.json()['choices'][0]['message']['content']
-
-def ask_openai(question: str, context: str) -> str:
-    interface = st.session_state.openai_interface
-    conversation = [
-        {"role": "system", "content": "You are a legal assistant specializing in Australian protection visa cases. Use the provided context and respond with probability estimates."},
-        {"role": "user", "content": f"Context: {context}\n\nQuestion: {question}"}
-    ]
-    return interface.generate_chat_response(conversation)
-
-# Streamlit application
+# Streamlit application setup
 def main():
-    st.set_page_config(page_title="Protection Visa Assistant", page_icon="🛡️", layout="wide")
+    # Set the page configuration
+    st.set_page_config(
+        page_title="Protection Visa Assistant",
+        page_icon="🛡️",
+        layout="wide"
+    )
+
+    # Application title
     st.title("🛡️ Australian Protection Visa Assistant")
 
-    # Initialize OpenAI interface
-    if 'openai_interface' not in st.session_state:
-        st.session_state.openai_interface = OpenAIInterface()
-
-    # Initialize session state
+    # Initialize session state variables
     if 'responses' not in st.session_state:
-        st.session_state.responses = {}
+        # Store user responses for all questions
+        st.session_state.responses = [None] * 12  
     if 'step' not in st.session_state:
-        st.session_state.step = 1
+        # Track the current group (1, 2, or 3)
+        st.session_state.step = 1  
     if 'progress' not in st.session_state:
-        st.session_state.progress = 0
+        # Track progress across all questions
+        st.session_state.progress = 0  
     if 'next_group_unlocked' not in st.session_state:
-        st.session_state.next_group_unlocked = False
+        # Whether the "Next Group" button is active
+        st.session_state.next_group_unlocked = False  
 
-    # Predefined legal guidance
-    st.subheader("Guidance for Australian Protection Visa")
-    st.write("""
-    Protection visas apply to individuals who need protection in Australia because they face real risks of significant harm or persecution if they return to their home country. Answer the questions below to determine your eligibility.
-    """)
-
-    # Questions split into groups
+    # Questions split into 3 groups
     questions_group = {
         1: [
             "Are you a refugee or at risk of significant harm if you return to your home country?",
@@ -418,55 +532,63 @@ def main():
         ]
     }
 
-    # Sidebar progress bar
-    total_questions = sum(len(questions) for questions in questions_group.values())
-    progress_percentage = int((st.session_state.progress / total_questions) * 100)
+    # Sidebar: Progress bar
+    total_questions = len(st.session_state.responses)
+    answered_questions = sum(1 for r in st.session_state.responses if r is not None)
     st.sidebar.header("Progress")
-    st.sidebar.progress(progress_percentage)
+    st.sidebar.progress(answered_questions / total_questions)
 
-    # Current step
+    # Display questions for the current group
     step = st.session_state.step
     current_questions = questions_group[step]
 
-    # Display questions for the current step
     st.subheader(f"Step {step}: Questions")
-    for idx, question in enumerate(current_questions, 1):
-        key = f"step_{step}_q{idx}"
-        # Set default option to None
-        if key not in st.session_state.responses:
-            st.session_state.responses[key] = None
-        st.session_state.responses[key] = st.radio(f"{idx}. {question}", ["Select an option", "Yes", "No"], key=key, index=0)
+    for idx, question in enumerate(current_questions, start=(step - 1) * 4):
+        # Key for each question's response in session state
+        question_key = f"q{idx}"
+        if question_key not in st.session_state:
+            st.session_state[question_key] = None  # Default to no selection
 
-    # Submit button for current step
+        # Radio button for answering questions
+        st.session_state.responses[idx] = st.radio(
+            f"{idx + 1}. {question}",
+            options=["Select an option", "Yes", "No"],
+            index=0 if st.session_state.responses[idx] is None else
+            (1 if st.session_state.responses[idx] == "Yes" else 2),
+            key=question_key
+        )
+
+    # Submit button for current group
     if st.button(f"Submit Step {step}"):
-        # Ensure all questions are answered
-        if all(st.session_state.responses[f"step_{step}_q{idx}"] not in [None, "Select an option"] for idx in range(1, len(current_questions) + 1)):
-            # Compile context for current step
-            context = "\n".join([f"{q} | Answer: {st.session_state.responses[f'step_{step}_q{idx}']}" for idx, q in enumerate(current_questions, 1)])
-            with st.spinner("Analyzing your responses..."):
-                result = ask_openai("Based on these responses, what is the probability of meeting protection visa requirements?", context)
-            st.success("Analysis complete!")
-            st.write(result)
-
+        # Ensure all questions in the current group are answered
+        group_start = (step - 1) * 4
+        group_end = step * 4
+        if all(st.session_state.responses[i] is not None for i in range(group_start, group_end)):
+            st.success("Responses for this step have been saved.")
+            # Unlock the "Next Group" button
+            st.session_state.next_group_unlocked = True
             # Update progress
             st.session_state.progress += len(current_questions)
-            st.session_state.next_group_unlocked = True
         else:
             st.error("Please answer all questions before submitting.")
 
-    # Next group button
+    # "Next Group" button
     if st.session_state.next_group_unlocked and step < 3:
         if st.button("Next Group"):
+            # Move to the next group of questions
             st.session_state.step += 1
             st.session_state.next_group_unlocked = False
 
-    # Final result
+    # Final result after completing all steps
     if step == 3 and st.session_state.progress == total_questions:
         st.subheader("Final Result")
-        st.write("Based on your answers to all questions, here is the final analysis:")
-        final_context = "\n".join([f"Step {i}: {', '.join([f'Q{j}: {st.session_state.responses[f'step_{i}_q{j}']}' for j in range(1, 5)])}" for i in range(1, 4)])
-        final_result = ask_openai("Provide a final analysis of the applicant's eligibility for a protection visa based on all steps.", final_context)
-        st.write(final_result)
+        st.write("You have completed all steps. Based on your responses, here is the analysis:")
+        # Display a summary of all answers
+        for group_idx in range(1, 4):
+            st.write(f"Step {group_idx}:")
+            for idx, question in enumerate(questions_group[group_idx], start=(group_idx - 1) * 4):
+                answer = st.session_state.responses[idx]
+                st.write(f"  - {idx + 1}. {question}: **{answer}**")
 
 if __name__ == "__main__":
     main()
