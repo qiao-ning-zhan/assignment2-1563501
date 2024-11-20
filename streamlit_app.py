@@ -476,8 +476,166 @@
 
 
 
-# ======
+# # ======
+# import streamlit as st
+# from typing import List, Dict
+# import requests
+# from dotenv import load_dotenv
+
+# # Load environment variables
+# load_dotenv()
+
+# # Load OpenAI API Key
+# OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
+# if not OPENAI_API_KEY:
+#     raise ValueError("OPENAI_API_KEY not found in environment variables")
+
+# # OpenAI interface
+# class OpenAIInterface:
+#     def __init__(self):
+#         self.api_key = OPENAI_API_KEY
+#         self.base_url = "https://api.openai.com/v1"
+#         self.headers = {
+#             "Authorization": f"Bearer {self.api_key}",
+#             "Content-Type": "application/json"
+#         }
+
+#     def generate_chat_response(self, conversation: List[Dict[str, str]]) -> str:
+#         payload = {
+#             "model": "gpt-3.5-turbo",
+#             "messages": conversation
+#         }
+#         response = requests.post(f"{self.base_url}/chat/completions", headers=self.headers, json=payload)
+#         response.raise_for_status()
+#         return response.json()['choices'][0]['message']['content']
+
+# def ask_openai(question: str, context: str) -> str:
+#     interface = st.session_state.openai_interface
+#     conversation = [
+#         {"role": "system", "content": "You are a legal assistant specializing in Australian protection visa cases. Use the provided context and respond with probability estimates."},
+#         {"role": "user", "content": f"Context: {context}\n\nQuestion: {question}"}
+#     ]
+#     return interface.generate_chat_response(conversation)
+
+# # Streamlit application
+# def main():
+#     st.set_page_config(page_title="Protection Visa Assistant", page_icon="🛡️", layout="wide")
+#     st.title("🛡️ Australian Protection Visa Assistant")
+
+#     # Initialize OpenAI interface
+#     if 'openai_interface' not in st.session_state:
+#         st.session_state.openai_interface = OpenAIInterface()
+
+#     # Initialize session state
+#     if 'responses' not in st.session_state:
+#         st.session_state.responses = {}
+#     if 'step' not in st.session_state:
+#         st.session_state.step = 1
+#     if 'progress' not in st.session_state:
+#         st.session_state.progress = 0
+#     if 'next_group_unlocked' not in st.session_state:
+#         st.session_state.next_group_unlocked = False
+
+#     # Predefined legal guidance
+#     st.subheader("Guidance for Australian Protection Visa")
+#     st.write("""
+#     Protection visas apply to individuals who need protection in Australia because they face real risks of significant harm or persecution if they return to their home country. Answer the questions below to determine your eligibility.
+#     """)
+
+#     # Questions split into groups
+#     questions_group = {
+#         1: [
+#             "Are you a refugee or at risk of significant harm if you return to your home country?",
+#             "Can you legally settle in another country (not your home country) with safety guaranteed?",
+#             "Do you have a well-founded fear of persecution, making you unable or unwilling to return to your home country?",
+#             "Do you fear persecution based on race, religion, nationality, membership in a particular social group, or political opinion?"
+#         ],
+#         2: [
+#             "Does persecution involve serious harm or systematic, discriminatory conduct?",
+#             "Do you face real risk of persecution in all areas of your home country?",
+#             "Does serious harm include threats to life or freedom?",
+#             "Does serious harm include severe physical harassment or abuse?"
+#         ],
+#         3: [
+#             "Does serious harm include severe economic hardship threatening survival?",
+#             "Does serious harm require you to alter or hide your beliefs, identity, or practices (e.g., religion, sexuality)?",
+#             "Can your home country's government or any controlling group protect you from persecution?",
+#             "Does significant harm risk include torture, inhumane treatment, or punishment?"
+#         ]
+#     }
+
+#     # Sidebar progress bar
+#     total_questions = sum(len(questions) for questions in questions_group.values())
+#     progress_percentage = int((st.session_state.progress / total_questions) * 100)
+#     st.sidebar.header("Progress")
+#     st.sidebar.progress(progress_percentage)
+
+#     # Define function to go to next group
+#     def next_group():
+#         st.session_state.step += 1
+#         st.session_state.next_group_unlocked = False
+
+#     # Next group button
+#     if st.session_state.next_group_unlocked and st.session_state.step < 3:
+#         st.button("Next Group", on_click=next_group)
+
+#     # Current step
+#     step = st.session_state.step
+#     current_questions = questions_group[step]
+
+#     # Display questions for the current step
+#     st.subheader(f"Step {step}: Questions")
+#     for idx, question in enumerate(current_questions, 1):
+#         key = f"step_{step}_q{idx}"
+#         # Set default option to "Select an option"
+#         if key not in st.session_state.responses:
+#             st.session_state.responses[key] = "Select an option"
+#         options = ["Select an option", "Yes", "No"]
+#         current_value = st.session_state.responses[key]
+#         index = options.index(current_value) if current_value in options else 0
+#         st.session_state.responses[key] = st.radio(f"{idx}. {question}", options, key=key, index=index)
+
+#     # Submit button for current step
+#     if st.button(f"Submit Step {step}"):
+#         # Ensure all questions are answered
+#         if all(st.session_state.responses[f"step_{step}_q{idx}"] != "Select an option" for idx in range(1, len(current_questions) + 1)):
+#             # Compile context for current step
+#             context = "\n".join([f"{q} | Answer: {st.session_state.responses[f'step_{step}_q{idx}']}" for idx, q in enumerate(current_questions, 1)])
+#             with st.spinner("Analyzing your responses..."):
+#                 result = ask_openai("Based on these responses, what is the probability of meeting protection visa requirements?", context)
+#             st.success("Analysis complete!")
+#             st.write(result)
+
+#             # Update progress
+#             st.session_state.progress += len(current_questions)
+#             st.session_state.next_group_unlocked = True
+#         else:
+#             st.error("Please answer all questions before submitting.")
+
+#     # Final result
+#     if step == 3 and st.session_state.progress == total_questions:
+#         st.subheader("Final Result")
+#         st.write("Based on your answers to all questions, here is the final analysis:")
+#         final_context = "\n".join([
+#             f"Step {i}: " + ", ".join([
+#                 f"Q{j}: {st.session_state.responses[f'step_{i}_q{j}']}"
+#                 for j in range(1, len(questions_group[i]) + 1)
+#             ])
+#             for i in range(1, 4)
+#         ])
+#         final_result = ask_openai(
+#             "Provide a final analysis of the applicant's eligibility for a protection visa based on all steps.",
+#             final_context
+#         )
+#         st.write(final_result)
+
+# if __name__ == "__main__":
+#     main()
+
+
+
 import streamlit as st
+import time  # Import the time module
 from typing import List, Dict
 import requests
 from dotenv import load_dotenv
@@ -485,12 +643,12 @@ from dotenv import load_dotenv
 # Load environment variables
 load_dotenv()
 
-# Load OpenAI API Key
+# Load OpenAI API key
 OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
 if not OPENAI_API_KEY:
     raise ValueError("OPENAI_API_KEY not found in environment variables")
 
-# OpenAI interface
+# OpenAI API Interface
 class OpenAIInterface:
     def __init__(self):
         self.api_key = OPENAI_API_KEY
@@ -522,7 +680,7 @@ def main():
     st.set_page_config(page_title="Protection Visa Assistant", page_icon="🛡️", layout="wide")
     st.title("🛡️ Australian Protection Visa Assistant")
 
-    # Initialize OpenAI interface
+    # Initialize the OpenAI interface
     if 'openai_interface' not in st.session_state:
         st.session_state.openai_interface = OpenAIInterface()
 
@@ -535,6 +693,8 @@ def main():
         st.session_state.progress = 0
     if 'next_group_unlocked' not in st.session_state:
         st.session_state.next_group_unlocked = False
+    if 'analysis_complete_time' not in st.session_state:
+        st.session_state.analysis_complete_time = None
 
     # Predefined legal guidance
     st.subheader("Guidance for Australian Protection Visa")
@@ -542,7 +702,7 @@ def main():
     Protection visas apply to individuals who need protection in Australia because they face real risks of significant harm or persecution if they return to their home country. Answer the questions below to determine your eligibility.
     """)
 
-    # Questions split into groups
+    # Question groups
     questions_group = {
         1: [
             "Are you a refugee or at risk of significant harm if you return to your home country?",
@@ -570,24 +730,21 @@ def main():
     st.sidebar.header("Progress")
     st.sidebar.progress(progress_percentage)
 
-    # Define function to go to next group
+    # Function to proceed to the next group
     def next_group():
         st.session_state.step += 1
         st.session_state.next_group_unlocked = False
-
-    # Next group button
-    if st.session_state.next_group_unlocked and st.session_state.step < 3:
-        st.button("Next Group", on_click=next_group)
+        st.session_state.analysis_complete_time = None  # Reset the analysis completion time
 
     # Current step
     step = st.session_state.step
     current_questions = questions_group[step]
 
-    # Display questions for the current step
+    # Display the current step questions
     st.subheader(f"Step {step}: Questions")
     for idx, question in enumerate(current_questions, 1):
         key = f"step_{step}_q{idx}"
-        # Set default option to "Select an option"
+        # Set the default option to "Select an option"
         if key not in st.session_state.responses:
             st.session_state.responses[key] = "Select an option"
         options = ["Select an option", "Yes", "No"]
@@ -595,11 +752,11 @@ def main():
         index = options.index(current_value) if current_value in options else 0
         st.session_state.responses[key] = st.radio(f"{idx}. {question}", options, key=key, index=index)
 
-    # Submit button for current step
+    # Submit button for the current step
     if st.button(f"Submit Step {step}"):
         # Ensure all questions are answered
         if all(st.session_state.responses[f"step_{step}_q{idx}"] != "Select an option" for idx in range(1, len(current_questions) + 1)):
-            # Compile context for current step
+            # Compile the context for the current step
             context = "\n".join([f"{q} | Answer: {st.session_state.responses[f'step_{step}_q{idx}']}" for idx, q in enumerate(current_questions, 1)])
             with st.spinner("Analyzing your responses..."):
                 result = ask_openai("Based on these responses, what is the probability of meeting protection visa requirements?", context)
@@ -608,9 +765,20 @@ def main():
 
             # Update progress
             st.session_state.progress += len(current_questions)
-            st.session_state.next_group_unlocked = True
+            st.session_state.analysis_complete_time = time.time()
+            # Do not set next_group_unlocked here
         else:
             st.error("Please answer all questions before submitting.")
+
+    # Check if 3 seconds have passed to unlock the next group
+    if st.session_state.analysis_complete_time and step < 3:
+        elapsed_time = time.time() - st.session_state.analysis_complete_time
+        if elapsed_time >= 3:
+            st.session_state.next_group_unlocked = True
+
+    # Display the "Next Group" button
+    if st.session_state.next_group_unlocked and st.session_state.step < 3:
+        st.button("Next Group", on_click=next_group)
 
     # Final result
     if step == 3 and st.session_state.progress == total_questions:
