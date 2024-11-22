@@ -109,3 +109,10 @@ Below are three test cases to demonstrate the application's functionality. Each 
 
 *Fearing for my safety and that of my family, I decided to leave Country E. I cannot return home, as I am certain that I will be imprisoned or worse. I am seeking asylum to live freely and continue my work without fear of persecution.*
 
+### Test Case III Output
+
+![Test_3-1](https://github.com/qiao-ning-zhan/assignment2-1563501/blob/main/TestCase3/Test-3-1.png)
+![Test_3-2](https://github.com/qiao-ning-zhan/assignment2-1563501/blob/main/TestCase3/Test-3-2.png)
+![Test_3-3](https://github.com/qiao-ning-zhan/assignment2-1563501/blob/main/TestCase3/Test-3-3.png)
+![Test_3-4](https://github.com/qiao-ning-zhan/assignment2-1563501/blob/main/TestCase3/Test-3-4.png)
+![Test_3-5](https://github.com/qiao-ning-zhan/assignment2-1563501/blob/main/TestCase3/Test-3-5.png)
