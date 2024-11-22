@@ -18,7 +18,8 @@ The Australian Protection Visa Assistant is an AI-powered tool that guides users
 
 ## Usage Instructions
 
-1. **Access the Application**: Navigate to the deployed application URL: `https://assignment2-1563501-vush9h64aryhpakmbwdpoc.streamlit.app`  or [Click Here]([URL](https://assignment2-1563501-vush9h64aryhpakmbwdpoc.streamlit.app))
+1. **Access the Application**: Navigate to the deployed application URL: [https://assignment2-1563501-vush9h64aryhpakmbwdpoc.streamlit.app](https://assignment2-1563501-vush9h64aryhpakmbwdpoc.streamlit.app) or [Click Here](https://assignment2-1563501-vush9h64aryhpakmbwdpoc.streamlit.app)
+
 
 2. **Initial Explanation**: Read the assistant's introduction to understand how the tool works
 
