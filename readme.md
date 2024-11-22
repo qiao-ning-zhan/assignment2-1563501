@@ -86,11 +86,11 @@ Below are three test cases to demonstrate the application's functionality. Each 
 
 ### Test Case II Output
 
-![Test_2-1](https://github.com/qiao-ning-zhan/assignment2-1563501/blob/main/TestCase1/Test-2-1.png)
-![Test_2-2](https://github.com/qiao-ning-zhan/assignment2-1563501/blob/main/TestCase1/Test-2-2.png)
-![Test_2-3](https://github.com/qiao-ning-zhan/assignment2-1563501/blob/main/TestCase1/Test-2-3.png)
-![Test_2-4](https://github.com/qiao-ning-zhan/assignment2-1563501/blob/main/TestCase1/Test-2-4.png)
-![Test_2-5](https://github.com/qiao-ning-zhan/assignment2-1563501/blob/main/TestCase1/Test-2-5.png)
+![Test_2-1](https://github.com/qiao-ning-zhan/assignment2-1563501/blob/main/TestCase2/Test-2-1.png)
+![Test_2-2](https://github.com/qiao-ning-zhan/assignment2-1563501/blob/main/TestCase2/Test-2-2.png)
+![Test_2-3](https://github.com/qiao-ning-zhan/assignment2-1563501/blob/main/TestCase2/Test-2-3.png)
+![Test_2-4](https://github.com/qiao-ning-zhan/assignment2-1563501/blob/main/TestCase2/Test-2-4.png)
+![Test_2-5](https://github.com/qiao-ning-zhan/assignment2-1563501/blob/main/TestCase2/Test-2-5.png)
 
 ---
 
