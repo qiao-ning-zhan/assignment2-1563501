@@ -84,6 +84,13 @@ Below are three test cases to demonstrate the application's functionality. Each 
 
 *Finally, I quit my job, sold my property, and smuggled my family to Country D. I submitted a refugee application to the local immigration department, claiming that my life would be in danger if I returned home. But the evidence I provided was full of loopholes, and many details were inconsistent. The investigation found that my statements were basically fabricated.*
 
+### Test Case II Output
+
+![Test_2-1](https://github.com/qiao-ning-zhan/assignment2-1563501/blob/main/TestCase1/Test-2-1.png)
+![Test_2-2](https://github.com/qiao-ning-zhan/assignment2-1563501/blob/main/TestCase1/Test-2-2.png)
+![Test_2-3](https://github.com/qiao-ning-zhan/assignment2-1563501/blob/main/TestCase1/Test-2-3.png)
+![Test_2-4](https://github.com/qiao-ning-zhan/assignment2-1563501/blob/main/TestCase1/Test-2-4.png)
+![Test_2-5](https://github.com/qiao-ning-zhan/assignment2-1563501/blob/main/TestCase1/Test-2-5.png)
 
 ---
 
