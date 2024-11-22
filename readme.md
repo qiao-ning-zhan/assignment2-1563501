@@ -18,19 +18,19 @@ The Australian Protection Visa Assistant is an AI-powered tool that guides users
 
 ## Usage Instructions
 
-1. **Access the Application**: Navigate to the deployed application URL: `https://assignment2-1563501-vush9h64aryhpakmbwdpoc.streamlit.app`.
+1. **Access the Application**: Navigate to the deployed application URL: `https://assignment2-1563501-vush9h64aryhpakmbwdpoc.streamlit.app`   
 
-2. **Initial Explanation**: Read the assistant's introduction to understand how the tool works.
+2. **Initial Explanation**: Read the assistant's introduction to understand how the tool works
 
-3. **Answer Questions**: The questionnaire is divided into **4 steps**, each containing **3 questions**. For each question, select the most appropriate answer from the options provided.
+3. **Answer Questions**: The questionnaire is divided into **4 steps**, each containing **3 questions**. For each question, select the most appropriate answer from the options provided
 
-4. **Submit Responses**: After answering all questions in a step, click the **"Submit Step X"** button to submit your responses for that step.
+4. **Submit Responses**: After answering all questions in a step, click the **"Submit Step X"** button to submit your responses for that step
 
-5. **Additional Information**: After completing all steps, you have the option to provide any additional information that may support your application.
+5. **Additional Information**: After completing all steps, you have the option to provide any additional information that may support your application
 
-6. **Final Analysis**: Click on **"Get Final Analysis"** to receive a comprehensive evaluation of your eligibility for a Protection Visa based on your responses and any additional information provided.
+6. **Final Analysis**: Click on **"Get Final Analysis"** to receive a comprehensive evaluation of your eligibility for a Protection Visa based on your responses and any additional information provided
 
-7. **Review Results**: Read the final analysis carefully. This will help you understand your position and any potential next steps.
+7. **Review Results**: Read the final analysis carefully. This will help you understand your position and any potential next steps
 
 ## Test Cases
 
