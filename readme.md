@@ -40,11 +40,11 @@ Below are three test cases to demonstrate the application's functionality. Each 
 
 ### Test Case I
 
-#### Test case answers:
+#### Input Test Case Answers:
 
 1. Yes  2. No  3. Yes  4. Yes  5. Yes  6. Yes  7. Yes  8. Yes  9: Yes  10: Yes  11: No  12: Yes
 
-#### Additional Information:
+#### Input Additional Information:
 
 *My name is **Aba al Latif**, and I am a young man from **Country A**. The ethnic minority I belong to has long suffered discrimination and persecution. Because I actively participated in social movements for ethnic rights, I was arrested and detained by the government many times and was beaten and tortured in prison. The prison guard threatened me that if I continued to participate in ethnic rights activities, they would kill my entire family.*
 
@@ -53,6 +53,14 @@ Below are three test cases to demonstrate the application's functionality. Each 
 *In desperation, I secretly joined an underground religious group. When we met, we often discussed how to escape the country and live in a place where faith and personal freedom are guaranteed. Later, the government launched a large-scale crackdown and arrested believers, putting them in prison. I was listed as a wanted person and had to hide during the day and go out at night.*
 
 *With the help of my relatives and friends, I fled to neighboring **Country B**, but I still face the risk of being deported at any time because the two governments have close relations. I know that once I return to Country A, I will be sentenced to life imprisonment or even death. I have no political background; I am just an ordinary person who sticks to my beliefs and longs for freedom. Now, my only hope is to obtain refugee status and start a new life in a safe country.*
+
+### Test Case I Output
+
+![Test_1-1](https://github.com/qiao-ning-zhan/assignment2-1563501/blob/main/TestCase1/Test1-1.png)
+![Test_1-2](https://github.com/qiao-ning-zhan/assignment2-1563501/blob/main/TestCase1/Test1-2.png)
+![Test_1-3](https://github.com/qiao-ning-zhan/assignment2-1563501/blob/main/TestCase1/Test1-3.png)
+![Test_1-4](https://github.com/qiao-ning-zhan/assignment2-1563501/blob/main/TestCase1/Test1-4.png)
+![Test_1-5](https://github.com/qiao-ning-zhan/assignment2-1563501/blob/main/TestCase1/Test1-5.png)
 
 ---
 
