@@ -117,3 +117,8 @@ Below are three test cases to demonstrate the application's functionality. Each 
 ![Test_3-3](https://github.com/qiao-ning-zhan/assignment2-1563501/blob/main/TestCase3/Test-3-3.png)
 ![Test_3-4](https://github.com/qiao-ning-zhan/assignment2-1563501/blob/main/TestCase3/Test-3-4.png)
 ![Test_3-5](https://github.com/qiao-ning-zhan/assignment2-1563501/blob/main/TestCase3/Test-3-5.png)
+
+
+## Acknowledgements
+
+Special thanks to Jack Stoneman for his guidance and support in the development of this project.
