@@ -172,8 +172,10 @@ def main():
                             )
                             additional_info = ask_openai("Provide additional relevant guidance based on the context.", retrieved_context)
                         st.success("Analysis complete!")
+                        analysis_result = analysis_result + additional_info
                         st.write(analysis_result)
-                        st.markdown(f"**Additional Guidance:**\n{additional_info}")
+                        # st.markdown(f"**Additional Guidance:**\n{additional_info}")
+                        # st.write(additional_info)
 
                         st.session_state.analysis[step] = analysis_result
                         st.session_state.progress += len(questions_group[step])
