@@ -205,7 +205,7 @@ def main():
                 final_result = ask_openai(
                     "Provide a comprehensive final assessment for the applicant.", full_context
                 )
-            st.subheader("Final Result")
+            # st.subheader("Final Result")
             # st.write(final_result)
             st.session_state.final_result = final_result
 
